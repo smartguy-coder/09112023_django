@@ -12,10 +12,11 @@ RUN pip install poetry
 RUN apk add postgresql-client build-base postgresql-dev
 
 COPY library /library
+COPY poetry.lock pyproject.toml /library/
 
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi \
+    && poetry install --no-interaction --no-ansi
 
-RUN adduser --disable-password our-user
+
 
 EXPOSE 8000

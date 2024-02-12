@@ -12,13 +12,23 @@ services:
       - "5433:5432"
 
 
-  api:
+  web-app:
     build: .
-    env_file: .env
-    command: bash -c "alembic upgrade head &&  uvicorn main:app --port=8000 --host=0.0.0.0 --reload"
+    restart: always
+#    env_file: .env
+    environment:
+      DB_HOST: db
+      DB_NAME: our_database
+      DB_USER: our_user
+      DB_PASSWORD: postgres
     volumes:
-      - .:/app
+      - ./library:/library
     ports:
       - "8000:8000"
     depends_on:
       - db
+#    command: bash -c "python "
+
+
+volumes:
+  library:
