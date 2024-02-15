@@ -17,6 +17,4 @@ COPY poetry.lock pyproject.toml /library/
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi
 
-
-
 EXPOSE 8000
