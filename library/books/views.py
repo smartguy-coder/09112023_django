@@ -12,7 +12,7 @@ def book_list(request):
     # books = Book.objects.all()  # SELECT "books_book"."id", "books_book"."created_at", "books_book"."title",
                                   # "books_book"."price", "books_book"."last_changed_at",
                                   # "books_book"."pages", "books_book"."publisher_id"
-    # FROM "books_book"
+                                  # FROM "books_book"
 
 
     books = Book.objects.all(   #  SELECT "books_book"."id", "books_book"."created_at", "books_book"."title",
