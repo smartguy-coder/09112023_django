@@ -8,6 +8,7 @@ class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'price')
     ordering = ('-id',)
     readonly_fields = ('created_at',)
+    list_filter = ('authors',)
 
 
 class AuthorAdmin(admin.ModelAdmin):
