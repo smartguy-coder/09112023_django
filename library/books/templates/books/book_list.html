@@ -2,11 +2,13 @@
 
 {% block content %}
 
+
 <table style="border: 1px solid black;" border="1">
     <tr>
         <th>Назва книги</th>
         <th>Ціна</th>
         <th>Автори</th>
+        <th>Видавництво</th>
     </tr>
 
     {% for book in book_list %}
@@ -18,14 +20,11 @@
                 <span style="display:block">{{ author }}</span>
             {% endfor %}
         </td>
+        <td> {{ book.publisher.name }}</td>
 
 
     </tr>
     {% endfor %}
 
-
-
-
 </table>
-
 {% endblock %}
