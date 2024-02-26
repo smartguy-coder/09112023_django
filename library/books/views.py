@@ -21,8 +21,8 @@ def book_list(request):
                                 # "books_publisher"."id",
                                 # "books_publisher"."name" FROM "books_book" LEFT OUTER JOIN "books_publisher"
                                 # ON ("books_book"."publisher_id" = "books_publisher"."id")
-    ).select_related(
-        'publisher',
+    # ).select_related(
+    #     'publisher',
     ).only(
         'title', 'price', 'publisher'
     )
