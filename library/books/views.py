@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
 from .models import Book
 
 
@@ -9,6 +10,11 @@ class BookListView(ListView):
 
 
 def book_list(request):
+    limit = int((request.GET.get('limit') or 10))
+    skip = int((request.GET.get('skip') or 0))
+
+
+
     # books = Book.objects.all()  # SELECT "books_book"."id", "books_book"."created_at", "books_book"."title",
                                   # "books_book"."price", "books_book"."last_changed_at",
                                   # "books_book"."pages", "books_book"."publisher_id"
@@ -27,7 +33,7 @@ def book_list(request):
         'authors',
     ).only(
         'title', 'price', 'publisher'
-    )[10:30]  # LIMIT 20 OFFSET 10
+    ).order_by('-id')[skip:skip+limit]  # LIMIT 20 OFFSET 10
 
     #
     print(books.query)
@@ -54,11 +60,15 @@ def book_detail(request, book_id):
         'authors',
     ).first()
 
-    # print(book.query)
-
-
     context = {
         'book': book.__dict__,
         'age': 555
     }
     return render(request, 'books/book_detail.html', context)
+
+
+class BookCreateView(CreateView):
+    model = Book
+    template_name = 'books/book_add.html'
+    success_url = '/'
+    fields = '__all__'
