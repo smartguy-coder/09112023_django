@@ -61,7 +61,7 @@ def book_detail(request, book_id):
     ).first()
 
     context = {
-        'book': book.__dict__,
+        'book': book,
         'age': 555
     }
     return render(request, 'books/book_detail.html', context)
