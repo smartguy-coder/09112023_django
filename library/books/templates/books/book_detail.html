@@ -1,0 +1,10 @@
+{% extends 'books/base.html' %}
+
+{% block content %}
+{{book}}
+
+<p>назва {{ book.title}}</p>
+<p>видавництво {{ book.publisher }}</p>
+<p>ціна {{ book.price}}</p>
+<p>сторінок {{ book.pages}}</p>
+{% endblock %}
