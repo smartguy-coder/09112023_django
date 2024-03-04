@@ -7,7 +7,21 @@
 <body>
 
 <a href="{% url 'book_add' %}"> Додати нову книгу</a>
+<br>
 
+
+{% if request.user.is_authenticated %}
+<a href="{% url 'logout' %}"> розлогуватися</a>
+
+{% else %}
+<a href="{% url 'login' %}"> login</a>
+<br>
+<a href="{% url 'register' %}"> register</a>
+{% endif %}
+
+
+
+<br>
 {% block content %}
 {% endblock %}
 

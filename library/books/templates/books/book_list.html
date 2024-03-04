@@ -3,6 +3,8 @@
 {% block content %}
 
 
+
+
 <table style="border: 1px solid black;" border="1">
     <tr>
         <th>Назва книги</th>
@@ -10,6 +12,8 @@
         <th>Автори</th>
         <th>Видавництво</th>
         <th>Детальніше</th>
+        <th>Редагувати</th>
+        <th>Видалити</th>
     </tr>
 
     {% for book in book_list %}
@@ -23,6 +27,8 @@
         </td>
         <td> {{ book.publisher.name }}</td>
         <td> <a href="{% url 'book_detail' book_id=book.id %}">Детальніше</a></td>
+        <td> <a href="{% url 'book_update' pk=book.id %}">редагувати</a></td>
+        <td> <a href="{% url 'book_delete' pk=book.id %}">Видалити</a></td>
 
 
     </tr>

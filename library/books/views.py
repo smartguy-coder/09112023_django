@@ -1,7 +1,67 @@
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.views import LoginView
+
+from .forms import LoginUserForm, RegisterUserForm
 from .models import Book
+
+
+from django.contrib.auth import logout, login
+from django.shortcuts import redirect
+
+
+def api_books(request):
+    books = Book.objects.all(
+
+    ).select_related(
+        'publisher',
+    ).prefetch_related(
+        'authors',
+    ).only(
+        'title', 'price', 'publisher'
+    ).order_by('-id')
+
+    result = [
+        {
+            'title': book.title,
+            'pages': book.pages,
+            'price': float(book.price)
+        }
+        for book in books
+    ]
+    data = {'result': result, 'count': len(result)}
+
+    return JsonResponse(data)
+
+
+
+
+
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    template_name = 'books/register.html'
+    success_url = reverse_lazy('index')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('index')
+
+
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'books/login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('index')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('index')
 
 
 class BookListView(ListView):
@@ -72,3 +132,16 @@ class BookCreateView(CreateView):
     template_name = 'books/book_add.html'
     success_url = '/'
     fields = '__all__'
+
+
+class BookUpdateView(UpdateView):
+    model = Book
+    template_name = 'books/book_add.html'
+    success_url = '/'
+    fields = '__all__'
+
+
+class BookDeleteView(DeleteView):
+    model = Book
+    template_name = 'books/book_delete.html'
+    success_url = '/'
