@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "debug_toolbar",
+    'cachalot',
 
     'books',
 ]
@@ -139,6 +140,14 @@ INTERNAL_IPS = [
 
 def show_toolbar(request):
     return True
+
 DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://redis:6379",
+    }
 }

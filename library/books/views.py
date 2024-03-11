@@ -65,15 +65,22 @@ def logout_user(request):
 
 
 class BookListView(ListView):
-    queryset = Book.objects.all()
+    queryset = Book.objects.all(
+    ).select_related(
+        'publisher',
+    ).prefetch_related(
+        'authors',
+    ).only(
+        'title', 'price', 'publisher'
+    ).order_by('-id')
+
     template_name = 'books/book_list.html'
+    paginate_by = 2
 
 
 def book_list(request):
     limit = int((request.GET.get('limit') or 10))
     skip = int((request.GET.get('skip') or 0))
-
-
 
     # books = Book.objects.all()  # SELECT "books_book"."id", "books_book"."created_at", "books_book"."title",
                                   # "books_book"."price", "books_book"."last_changed_at",
