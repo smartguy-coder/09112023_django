@@ -58,8 +58,59 @@ services:
     ports:
       - "8081:8081"
 
+  worker:
+    build:
+      context: .
+    hostname: worker
+    entrypoint: celery
+    command: -A celery_app.app worker --loglevel=info
+    volumes:
+      - ./library:/library
+    environment:
+      DB_HOST: db
+      DB_NAME: our_database
+      DB_USER: our_user
+      DB_PASSWORD: postgres
+    depends_on:
+      - db
+      - redis
+    links:
+      - redis
 
+  worker2:
+    build:
+      context: .
+    hostname: worker2
+    entrypoint: celery
+    command: -A celery_app.app worker --loglevel=info
+    volumes:
+      - ./library:/library
+    environment:
+      DB_HOST: db
+      DB_NAME: our_database
+      DB_USER: our_user
+      DB_PASSWORD: postgres
+    depends_on:
+      - db
+      - redis
+    links:
+      - redis
 
+  flower:
+    build:
+      context: .
+    hostname: flower
+    entrypoint: celery
+    command: -A celery_app.app flower
+    volumes:
+      - ./library:/library
+    depends_on:
+      - db
+      - redis
+    links:
+      - redis
+    ports:
+      - "5555:5555"
 
 volumes:
   library:

@@ -42,3 +42,6 @@ class Publisher(models.Model):
     def __str__(self):
         return f'{self.name} **'
 
+
+class VisitCounter(models.Model):
+    visitors = models.IntegerField(default=0)

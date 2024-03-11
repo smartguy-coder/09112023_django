@@ -5,12 +5,15 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.views import LoginView
 
+from .bl.bl import increase_visitors
 from .forms import LoginUserForm, RegisterUserForm
 from .models import Book
 
 
 from django.contrib.auth import logout, login
 from django.shortcuts import redirect
+
+from .tasks import increase_visitors_shared
 
 
 def api_books(request):
@@ -78,9 +81,12 @@ class BookListView(ListView):
     paginate_by = 2
 
 
+
 def book_list(request):
     limit = int((request.GET.get('limit') or 10))
     skip = int((request.GET.get('skip') or 0))
+
+    increase_visitors_shared.delay()
 
     # books = Book.objects.all()  # SELECT "books_book"."id", "books_book"."created_at", "books_book"."title",
                                   # "books_book"."price", "books_book"."last_changed_at",
